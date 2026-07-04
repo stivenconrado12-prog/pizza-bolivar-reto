@@ -12,6 +12,8 @@ DROP TABLE IF EXISTS pedidos;
 DROP TABLE IF EXISTS pizzas;
 DROP TABLE IF EXISTS clientes;
 
+--corregido: Nombres de tablas y columnas en minúsculas y snake_case
+
 CREATE TABLE clientes (
     id_cliente SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -22,23 +24,24 @@ CREATE TABLE clientes (
 CREATE TABLE pizzas (
     id_pizza SERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
-    precio VARCHAR(20),
+    precio NUMERIC(10,2) NOT NULL, -- Corregido: Tipo de dato numérico
     disponible BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE pedidos (
     id_pedido SERIAL PRIMARY KEY,
-    id_cliente INTEGER,
+    id_cliente INTEGER NOT NULL REFERENCES clientes(id_cliente), -- Corregido: Llave foránea
     fecha_pedido TIMESTAMP DEFAULT NOW(),
-    total NUMERIC(10,2)
+    total NUMERIC(10,2) DEFAULT 0.00
 );
 
-CREATE TABLE DetallePedidos (
+CREATE TABLE detalle_pedidos ( -- Corregido: Nombre en minúsculas y snake_case
     id_detalle SERIAL PRIMARY KEY,
-    id_pedido INTEGER REFERENCES pedidos(id_pedido),
-    id_pizza INTEGER,
-    Cantidad INTEGER,
-    subtotal NUMERIC(10,2)
+    id_pedido INTEGER NOT NULL REFERENCES pedidos(id_pedido) ON DELETE CASCADE,
+    id_pizza INTEGER NOT NULL REFERENCES pizzas(id_pizza), -- Corregido: Llave foránea
+    cantidad INTEGER NOT NULL, -- Corregido: Nombre en minúsculas
+    precio_unitario NUMERIC(10,2) NOT NULL, -- Añadido: Para congelar el precio histórico
+    subtotal NUMERIC(10,2) NOT NULL
 );
 
 -- Datos de prueba

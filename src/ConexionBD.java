@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 public class ConexionBD {
 
-    static String url = "jdbc:postgresql://localhost:5432/pizzabolivar";
+    static String url = "jdbc:postgresql://localhost:5432/pizzeria";
     static String user = "postgres";
     static String pass = "12345";
 
